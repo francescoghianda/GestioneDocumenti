@@ -1,6 +1,7 @@
 package it.polimi.gd.beans;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Document
 {
@@ -13,11 +14,11 @@ public class Document
 
     public Document() {}
 
-    public Document(int id, String name, Date creationDate, String summary, String type, int parentId)
+    public Document(int id, String name, Timestamp creationDate, String summary, String type, int parentId)
     {
         this.id = id;
         this.name = name;
-        this.creationDate = creationDate;
+        this.creationDate = new Date(creationDate.getTime());
         this.summary = summary;
         this.type = type;
         this.parentId = parentId;

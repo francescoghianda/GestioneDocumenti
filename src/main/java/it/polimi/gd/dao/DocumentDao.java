@@ -28,7 +28,7 @@ public class DocumentDao
         return new Document(
                 resultSet.getInt("id"),
                 resultSet.getString("name"),
-                resultSet.getDate("creation_date"),
+                resultSet.getTimestamp("creation_date"),
                 resultSet.getString("summary"),
                 resultSet.getString("type"),
                 resultSet.getInt("parent"));
@@ -38,7 +38,7 @@ public class DocumentDao
     {
         try(PooledConnection connection = connectionPool.getConnection();
             PreparedStatement statement = connection.getConnection().prepareStatement(
-                    "SELECT * FROM document WHERE id = ?"))
+                    "SELECT id, name, creation_date, parent, summary, type FROM document WHERE id = ?"))
         {
             statement.setInt(1, documentId);
 
@@ -54,7 +54,7 @@ public class DocumentDao
     {
         try(PooledConnection connection = connectionPool.getConnection();
             PreparedStatement statement = connection.getConnection().prepareStatement(
-                    "SELECT * FROM document doc WHERE doc.parent = ?"))
+                    "SELECT id, name, creation_date, parent, summary, type FROM document doc WHERE doc.parent = ?"))
         {
             statement.setInt(1, parentId);
 
