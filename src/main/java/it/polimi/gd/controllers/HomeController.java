@@ -61,6 +61,7 @@ public class HomeController extends HttpServlet
 
             DirectoriesTree directoriesTree = DirectoriesTree.build(directories);
 
+            webContext.setVariable("version", Application.getVersion());
             webContext.setVariable("tree", directoriesTree);
             webContext.setVariable("moveDocument", moveDocument);
 

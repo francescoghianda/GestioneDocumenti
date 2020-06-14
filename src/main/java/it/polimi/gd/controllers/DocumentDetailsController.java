@@ -46,6 +46,7 @@ public class DocumentDetailsController extends HttpServlet
 
             WebContext webContext = new WebContext(req, resp, getServletContext(), req.getLocale());
             webContext.setVariable("doc", document.get());
+            webContext.setVariable("version", Application.getVersion());
             Application.getTemplateEngine().process("document-details", webContext, resp.getWriter());
         }
         catch (NumberFormatException e)

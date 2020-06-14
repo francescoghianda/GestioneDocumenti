@@ -24,6 +24,10 @@
   </context-param>
 
   <context-param>
+    <param-name>version</param-name>
+    <param-value>1.0 - HTML</param-value>
+  </context-param>
+  <context-param>
     <param-name>maxDirectoryNameLength</param-name>
     <param-value>50</param-value>
   </context-param>

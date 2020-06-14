@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Carica un documento</title>
-    <link rel="stylesheet" href="../../assets/css/main.css" th:href="@{/assets/css/main.css}">
 
+    <link rel="shortcut icon" href="../../assets/images/favicon.ico" th:href="@{/assets/images/favicon.ico}" type="image/x-icon">
+    <link rel="icon" href="../../assets/images/favicon.ico" th:href="@{/assets/images/favicon.ico}" type="image/x-icon">
+    <link rel="stylesheet" href="../../assets/css/main.css" th:href="@{/assets/css/main.css}">
 </head>
 <body>
 
@@ -14,6 +16,9 @@
             <span>Carica un documento</span>
         </header>
         <form action="/upload" method="post" enctype="multipart/form-data">
+            <div th:if="${error}" class="form-error">
+                <span th:utext="${errMessage}"></span>
+            </div>
             <input type="hidden" name="parent" th:value="${parentId}">
             <label for="input-file-name">Nome documento:</label>
             <input id="input-file-name" type="text" name="name" th:maxlength="${maxNameLen}" required>
@@ -24,6 +29,9 @@
             <input type="submit" value="Carica documento">
         </form>
     </div>
+    <footer class="page-footer" th:text="'v. '+${version}">
+        v. 1.0 - HTML
+    </footer>
 
 </body>
 </html>

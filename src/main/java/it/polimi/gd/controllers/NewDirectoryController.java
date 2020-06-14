@@ -38,7 +38,26 @@ public class NewDirectoryController extends HttpServlet
         try
         {
             int parentId = Integer.parseInt(req.getParameter("parent"));
+            int error = Integer.parseInt(Objects.toString(req.getParameter("err"), "0"));
+
+            String errorMessage;
+
+            switch (error)
+            {
+                case 1:
+                    errorMessage = "La cartella &egrave; gi&agrave; esistente.";
+                    break;
+                case 2:
+                    errorMessage = "Errore durante la creazione della cartella.";
+                    break;
+                default:
+                    errorMessage = "";
+            }
+
             WebContext webContext = new WebContext(req, resp, getServletContext(), req.getLocale());
+            webContext.setVariable("version", Application.getVersion());
+            webContext.setVariable("error", error > 0);
+            webContext.setVariable("errMessage", errorMessage);
             webContext.setVariable("parentId", parentId);
             webContext.setVariable("maxNameLen", maxDirectoryNameLength);
             Application.getTemplateEngine().process("new-directory", webContext, resp.getWriter());
@@ -80,9 +99,18 @@ public class NewDirectoryController extends HttpServlet
                 }
             }
 
+            Optional<Directory> directory = directoryDao.findDirectory(name, parentId);
+            if(directory.isPresent())
+            {
+                //resp.sendError(409, "The directory named "+name+" already exists!");
+                resp.sendRedirect("/new-directory?parent="+parentId+"&err=1");
+                return;
+            }
+
             if(!directoryDao.createDirectory(name, parentId))
             {
-                resp.sendError(409, "The directory named "+name+" already exists!");
+                //resp.sendError(500, "Error!");
+                resp.sendRedirect("/new-directory?parent="+parentId+"&err=2");
                 return;
             }
 

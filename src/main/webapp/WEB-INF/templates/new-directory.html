@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Crea una nuova cartella</title>
+
+    <link rel="shortcut icon" href="../../assets/images/favicon.ico" th:href="@{/assets/images/favicon.ico}" type="image/x-icon">
+    <link rel="icon" href="../../assets/images/favicon.ico" th:href="@{/assets/images/favicon.ico}" type="image/x-icon">
     <link rel="stylesheet" href="../../assets/css/main.css" th:href="@{/assets/css/main.css}">
 </head>
 <body>
@@ -12,6 +15,9 @@
             <span>Crea una nuova cartella</span>
         </header>
         <form action="/new-directory" method="post">
+            <div th:if="${error}" class="form-error">
+                <span th:utext="${errMessage}"></span>
+            </div>
             <input type="hidden" name="parent" th:value="${parentId}">
             <label for="input-dir-name">Nome cartella:</label>
             <div class="form-row">
@@ -20,5 +26,8 @@
             </div>
         </form>
     </div>
+    <footer class="page-footer" th:text="'v. '+${version}">
+        v. 1.0 - HTML
+    </footer>
 </body>
 </html>

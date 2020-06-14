@@ -54,8 +54,27 @@ public class UploadDocumentController extends HttpServlet
         try
         {
             int parentId = Integer.parseInt(req.getParameter("parent"));
+            int error = Integer.parseInt(Objects.toString(req.getParameter("err"), "0"));
+
+            String errorMessage;
+
+            switch (error)
+            {
+                case 1:
+                    errorMessage = "Il documento &egrave; gi&agrave; esistente.";
+                    break;
+                case 2:
+                    errorMessage = "Errore durante il caricamento del documento.";
+                    break;
+                default:
+                    errorMessage = "";
+            }
+
 
             WebContext webContext = new WebContext(req, resp, getServletContext(), req.getLocale());
+            webContext.setVariable("version", Application.getVersion());
+            webContext.setVariable("error", error > 0);
+            webContext.setVariable("errorMessage", errorMessage);
             webContext.setVariable("parentId", parentId);
             webContext.setVariable("maxNameLen", maxDocumentNameLength);
             webContext.setVariable("maxSummaryLen", maxDocumentSummaryLength);
@@ -117,7 +136,8 @@ public class UploadDocumentController extends HttpServlet
 
             if((documentId = documentDao.createDocument(name, summary.isEmpty() ? null : summary, documentType, parentId)) <= 0)
             {
-                resp.sendError(409, "Document already exists!");
+                //resp.sendError(409, "Document already exists!");
+                resp.sendRedirect("/upload?parent="+parentId+"&err=1");
                 return;
             }
 
@@ -125,7 +145,8 @@ public class UploadDocumentController extends HttpServlet
 
             if(outputStream == null)
             {
-                resp.sendError(500, "Error uploading file!");
+                //resp.sendError(500, "Error uploading file!");
+                resp.sendRedirect("/upload?parent="+parentId+"&err=2");
                 documentDao.deleteDocument(documentId);
                 return;
             }

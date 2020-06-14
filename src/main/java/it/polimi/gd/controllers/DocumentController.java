@@ -55,6 +55,7 @@ public class DocumentController extends HttpServlet
 
             WebContext webContext = new WebContext(req, resp, getServletContext(), req.getLocale());
 
+            webContext.setVariable("version", Application.getVersion());
             webContext.setVariable("dir", directory.get());
             webContext.setVariable("documents", documents);
 

@@ -4,34 +4,9 @@
     <meta charset="UTF-8">
     <title>Home Page</title>
 
+    <link rel="shortcut icon" href="../../assets/images/favicon.ico" th:href="@{/assets/images/favicon.ico}" type="image/x-icon">
+    <link rel="icon" href="../../assets/images/favicon.ico" th:href="@{/assets/images/favicon.ico}" type="image/x-icon">
     <link rel="stylesheet" href="../../assets/css/main.css" th:href="@{/assets/css/main.css}">
-
-
-    <script>
-
-        window.onload = function () {
-
-            Array.from(document.getElementsByClassName('open-folder-btn')).forEach(button =>
-            {
-               button.onclick = function () {
-                   button.closest('.item').querySelector('.sub-list').classList.remove('hidden');
-                   button.style.display = "none";
-                   button.nextElementSibling.removeAttribute('style');
-               }
-            });
-
-            Array.from(document.getElementsByClassName('close-folder-btn')).forEach(button =>
-            {
-                button.onclick = function () {
-                    button.closest('.item').querySelector('.sub-list').classList.add('hidden');
-                    button.style.display = "none";
-                    button.previousElementSibling.removeAttribute('style');
-                }
-            });
-        }
-
-    </script>
-
 </head>
 <body>
 
@@ -47,18 +22,19 @@
         </header>
         <ul class="list">
             <li class="item" th:each="dirNode : ${tree.root.getChildren()}">
+                <input type="checkbox" class="open-folder-button">
+                <span class="open-folder-button-label"></span>
                 <div class="item-content">
-                    <img class="item-icon" src="../../assets/images/folder-24px.svg" th:src="@{/assets/images/folder-24px.svg}">
+                    <!--<img class="item-icon" src="../../assets/images/folder-24px.svg" th:src="@{/assets/images/folder-24px.svg}">-->
+                    <div class="item-icon"></div>
                     <span class="item-text" th:text="${dirNode.value.name}">Directory 1</span>
                     <div class="right-buttons">
-                        <button class="button open-folder-btn">apri</button>
-                        <button class="button close-folder-btn" style="display: none">chiudi</button>
                         <a title="Crea nuova cartella" class="button" th:href="@{/new-directory(parent=${dirNode.value.id})}">
                             <img class="btn-icon" src="../../assets/images/create_new_folder-24px.svg" th:src="@{/assets/images/create_new_folder-24px.svg}">
                         </a>
                     </div>
                 </div>
-                <ul class="sub-list hidden">
+                <ul class="sub-list">
                     <li class="sub-item" th:class="${moveDocument && dir.id == doc.parentId} ? 'sub-item disabled' : 'sub-item'" th:each="dir : ${dirNode.getChildrenValues()}">
                         <div class="sub-item-content">
                             <img class="item-icon" src="../../assets/images/folder-24px.svg" th:src="@{/assets/images/folder-24px.svg}">
@@ -74,6 +50,9 @@
             </li>
         </ul>
     </div>
+    <footer class="page-footer" th:text="'v. '+${version}">
+        v. 1.0 - HTML
+    </footer>
 
 
 </body>
